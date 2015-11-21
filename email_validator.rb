@@ -23,18 +23,18 @@ class EmailValidator
       puts "checking #{email}"
       clean_email_lists << check_email(email) if check_email(email)
     end
-    
+
     clean_email_lists
   end
 
   def check_email(email)
-    url = "http://apilayer.net/api/check?access_key=#{@access_key}&email=#{email}&smtp=1&format=1"
+    url = "http://apilayer.net/api/check?access_key=#{@access_key}&email=#{email}&smtp=0&format=1"
     response = HTTParty.get(url)
     if response['score'] >= 0.80
-      puts "Added #{response['email']}"
+      puts "#{response['email']} has a score of #{response['score']}"
       return response['email']
     end
-    puts "#{response['email']} is invalid"
+    puts "#{response['email']} has a score of #{response['score']}"
   end
 
   def save_to_csv(clean_emails)
